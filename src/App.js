@@ -12,13 +12,20 @@ import SearchBar from './components/SearchBar/SearchBar'
 // Import the dummyData
 import './App.css';
 import dummyData from './dummy-data'
-
+    let counter = 0;
 const App = () => {
   // Create a state called `posts` to hold the array of post objects, **initializing to dummyData**.
   // This state is the source of truth for the data inside the app. You won't be needing dummyData anymore.
   // To make the search bar work (which is stretch) we'd need another state to hold the search term.
   const [ posts, setPosts ] = useState(dummyData);
   const [ searchTerm , setSearchTerm ] = useState("");
+  // const [ likedBoo, setLikedBoo ] = useState(false);
+
+  const changeLike = (post, num) => {
+    post.liked = !(post.liked)
+    return {...post, likes: post.likes+num }
+  }
+
 
   const likePost = postId => {
     /*
@@ -35,7 +42,13 @@ const App = () => {
 
       const updatedPosts = posts.map(post => {
         if(postId === post.id) {
-          return {...post, likes: post.likes+1 }
+
+          if(!post.liked){
+            return changeLike(post, +1)
+          } else {
+            return changeLike(post, -1)
+          }
+          
         } else {
           return post;
         }
